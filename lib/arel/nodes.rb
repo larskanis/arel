@@ -5,6 +5,7 @@ require 'arel/nodes/select_core'
 require 'arel/nodes/insert_statement'
 require 'arel/nodes/update_statement'
 require 'arel/nodes/bind_param'
+require 'arel/nodes/bind_array_param'
 
 # terminal
 
@@ -80,7 +81,7 @@ module Arel
 
     def self.build_quoted other, attribute = nil
       case other
-      when Arel::Nodes::Node, Arel::Attributes::Attribute, Arel::Table, Arel::Nodes::BindParam, Arel::SelectManager
+      when Arel::Nodes::Node, Arel::Attributes::Attribute, Arel::Table, Arel::Nodes::BindParam, Arel::Nodes::BindArrayParam, Arel::SelectManager
         other
       else
         case attribute

@@ -27,6 +27,29 @@ module Arel
       def visit_Arel_Nodes_BindParam o, collector
         collector.add_bind(o) { |i| "$#{i}" }
       end
+
+      def visit_Arel_Nodes_In o, collector
+        case o.right.first
+        when Arel::Nodes::BindArrayParam
+          collector = visit o.left, collector
+          collector << " = ANY ("
+          visit(o.right, collector) << ")"
+        else
+          super
+        end
+      end
+
+      def visit_Arel_Nodes_NotIn o, collector
+        case o.right.first
+        when Arel::Nodes::BindArrayParam
+          collector = visit o.left, collector
+          collector << " != ALL ("
+          collector = visit o.right, collector
+          collector << ")"
+        else
+          super
+        end
+      end
     end
   end
 end

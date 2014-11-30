@@ -20,7 +20,8 @@ module Arel
       def substitute_binds bvs
         bvs = bvs.dup
         @parts.map do |val|
-          if Arel::Nodes::BindParam === val
+          case val
+          when Arel::Nodes::BindParam, Arel::Nodes::BindArrayParam
             bvs.shift
           else
             val
